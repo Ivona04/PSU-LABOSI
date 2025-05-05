@@ -1,0 +1,26 @@
+import os
+import matplotlib.pyplot as plt
+from PIL import Image
+import glob
+
+train_dir = "gtsrb/Train"
+
+class_dirs = sorted(os.listdir(train_dir))
+print(f"Pronađeno {len(class_dirs)} klasa.")
+print("Primjeri klasa:", class_dirs[:5], "...")
+
+for class_id in class_dirs[:3]:
+    class_path = os.path.join(train_dir, class_id)
+    img_paths = glob.glob(os.path.join(class_path, "*.*"))[:5]
+
+    plt.figure(figsize=(10, 2))
+    for i, img_path in enumerate(img_paths):
+        try:
+            img = Image.open(img_path)
+            plt.subplot(1, 5, i + 1)
+            plt.imshow(img)
+            plt.axis("off")
+        except Exception as e:
+            print(f"Greška pri učitavanju slike: {img_path}, {e}")
+    plt.suptitle(f"Primjeri za klasu: {class_id}")
+    plt.show()
